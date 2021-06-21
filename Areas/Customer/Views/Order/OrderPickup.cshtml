@@ -1,0 +1,163 @@
+﻿@model OrderListVM
+@{
+    ViewData["Title"] = "IndexAsync";
+}
+<form method="get">
+    <br />
+    <h1 class="text-info">Order Ready For Pickup</h1>
+    <br />
+    <div class="WhiteBackGround border">
+        <div class="container border border-secondary mb-3" style="height:60px;">
+            <div class="row container">
+                <div class="col-11">
+                    <div class="row" style="padding-top:10px;">
+                        <div class="col-4">
+                            @Html.Editor("SearchName", new { htmlAttributes = new { @class = "form-control", @placeholder = "Name..." } })
+                        </div>
+                        <div class="col-4">
+                            @Html.Editor("SearchPhone", new { htmlAttributes = new { @class = "form-control", @placeholder = "Phone..." } })
+                        </div>
+                        <div class="col-4">
+                            @Html.Editor("SearchEmail", new { htmlAttributes = new { @class = "form-control", @placeholder = "Email..." } })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-1">
+                    <div class="row" style="padding-top:10px">
+                        <button type="submit" value="Search" class="btn btn-primary form-control">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @if (Model.Orders.Count() == 0)
+        {
+            <p class="text-danger">No Order Ready For Pickup ... </p>
+        }
+        else
+        {
+            <table class="table table-striped border">
+                <tr class="table-secondary">
+                    <th>
+                        @Html.DisplayNameFor(a => a.Orders[0].OrderHeader.id)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(a => a.Orders[0].OrderHeader.PickUpName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(a => a.Orders[0].OrderHeader.appUser.Email)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(a => a.Orders[0].OrderHeader.PickUpTime)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(a => a.Orders[0].OrderHeader.OrderAfterDiscount)
+                    </th>
+                    <th>
+                        Total Items
+                    </th>
+                    <th>
+
+                    </th>
+                </tr>
+                @foreach (var item in Model.Orders)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(a => item.OrderHeader.id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(a => item.OrderHeader.PickUpName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(a => item.OrderHeader.appUser.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(a => item.OrderHeader.PickUpTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(a => item.OrderHeader.OrderAfterDiscount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(a => item.OrderDetail.Count)
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-success showDetails" data-id="@item.OrderHeader.id" data-toggle="modal">
+                                <i class="fas fa-list-alt"></i>Details
+                            </button>
+
+                        </td>
+
+                    </tr>
+                }
+            </table>
+            <div page-model="@Model.PagingInfo"
+                 page-classes-enabled="true"
+                 page-class="btn border"
+                 page-class-normal="btn btn-light"
+                 page-class-selected="btn btn-info active"
+                 class="btn-group float-right">
+
+            </div>
+            <br />
+
+        }
+    </div>
+</form>
+<div class="modal fade" id="myModel" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog-centered modal-dialog" style="max-width:70%;" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-light ">
+                <div class="col-10 offset-1">
+                    <center>
+                        <h5 class="modal-title">
+                            Order Details
+                        </h5>
+                    </center>
+                </div>
+                <div class="col-1">
+                    <button class="btn btn-outline-secondary float-right close" 
+                            data-dismiss="modal" aria-label="Close">
+                        &times;
+                    </button>
+                </div>
+            </div>
+            <div class="modal-body justify-content-center" id="myModalContent">
+
+            </div>
+          
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        //import { type } from "jquery";
+
+        var URL = '/Customer/Order/OrderDetails';
+        $(function () {
+            $(".showDetails").click(function () {
+                var btnClicked = $(this);
+                var id = btnClicked.attr('data-id');
+
+                $.ajax({
+                    type: "GET",
+                    url: URL,
+                    contentType: "application/json;charset=utf-8",
+                    data: { "id": id },
+                    cache: false,
+                    dataType: "html",
+                    success: function (data) {
+                        $('#myModalContent').html(data);
+                        $('#myModel').modal('show');
+                    },
+                    erroe: function () {
+                        alert("Dynamic Content Load Failed");
+                    }
+                });
+            });
+        });
+
+    </script>
+}

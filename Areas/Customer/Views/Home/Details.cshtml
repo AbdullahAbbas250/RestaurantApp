@@ -1,0 +1,103 @@
+﻿@model ShoppingCard
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+<h2> Menu item Details </h2>
+<br />
+<form asp-action="Details" method="post">
+    <input type="hidden" asp-for="MenuItemId" />
+
+    <div class="WhiteBackGround border row">
+        <div class="col-md-8">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="col-12 pb-4 d-md-none">
+                <img src="@Model.MenuItem.image" width="100%" style="border:1px solid #ddd9b9 ; border-radius:5px;" />
+            </div>
+            <div class="row form-group">
+                <div class="col-md-4">
+                    <label asp-for="MenuItem.name" class="text-info font-weight-bold"></label>
+                </div>
+                <div class="col-md-8">
+                    <input asp-for="MenuItem.name" class="form-control" readonly />
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-4">
+                    <label asp-for="MenuItem.description" class="text-info font-weight-bold"></label>
+                </div>
+                <div class="col-md-8">
+                    <div class="border" style="border-radius:5px; padding:2px;">
+                        @Html.Raw(Model.MenuItem.description)
+                    </div>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-4">
+                    <label asp-for="MenuItem.price" class="text-info font-weight-bold"></label>
+                </div>
+                <div class="col-md-8">
+                    <input asp-for="MenuItem.price" class="form-control" readonly />
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-4">
+                    <label asp-for="MenuItem.CategoryId" class="text-info font-weight-bold"></label>
+                </div>
+                <div class="col-md-8">
+                    <input asp-for="MenuItem.Category.name" class="form-control" readonly />
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-4">
+                    <label asp-for="MenuItem.subCategoryId" class="text-info font-weight-bold"></label>
+                </div>
+                <div class="col-md-8">
+                    <input asp-for="MenuItem.subCategory.name" class="form-control" readonly />
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-4">
+                    <label asp-for="MenuItem.spicyness" class="text-info font-weight-bold"></label>
+                </div>
+                <div class="col-md-8">
+                    <select asp-for="MenuItem.spicyness" asp-items="@(Html.GetEnumSelectList<MenuItem.Espicy>())" class="form-control" disabled></select>
+                    <span class="text-danger" asp-validation-for="MenuItem.spicyness"></span>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-4">
+                    <label asp-for="Count" class="text-info font-weight-bold"></label>
+                </div>
+                <div class="col-md-8">
+                    <input asp-for="Count" class="form-control" />
+                    <span asp-validation-for="Count" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-4">
+
+                </div>
+                <div class="col-md-4 mb-4">
+                    <a asp-action="Index"
+                       class="btn btn-success form-control">
+                        Back To List
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <input type="submit" value="Add To Shopping Cart" class="btn btn-primary form-control" />
+                </div>
+            </div>
+        </div>
+        <div class="col-3 d-none d-md-block offset-1" >
+            <img src="@Model.MenuItem.image" width="100%" style="border:1px solid #ddd9b9 ; border-radius:5px;" />
+        </div>
+    </div>
+</form>
+
+@*to validate on page level*@
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

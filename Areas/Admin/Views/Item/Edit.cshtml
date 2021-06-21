@@ -1,0 +1,127 @@
+﻿@model CategrySubCategoryItem
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+<h2> Edit item </h2>
+<br />
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="item.id" />
+    <input type="hidden" asp-for="item.image" />
+    <div class="WhiteBackGround border row">
+        <div class="col-8">
+            <div class="row form-group">
+                <div class="col-4">
+                    <label asp-for="item.name" class="col-form-label"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="item.name" class="form-control" />
+                    <span class="text-danger" asp-validation-for="item.name"></span>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-4">
+                    <label asp-for="item.description" class="col-form-label"></label>
+                </div>
+                <div class="col-8">
+                    <textarea id="myDescription" asp-for="item.description" class="form-control"></textarea>
+                    <span class="text-danger" asp-validation-for="item.description"></span>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-4">
+                    <label asp-for="item.price" class="col-form-label"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="item.price" class="form-control" />
+                    <span class="text-danger" asp-validation-for="item.price"></span>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-4">
+                    <label asp-for="item.image" class="col-form-label"></label>
+                </div>
+                <div class="col-8">
+                    <input type="file" multiple asp-for="item.image" class="form-control" />
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-4">
+                    <label asp-for="item.CategoryId" class="col-form-label"></label>
+                </div>
+                <div class="col-8">
+                    <select id="dropDownCategry" asp-for="item.CategoryId" asp-items="@(new SelectList(Model.Category,"id","name"))" class="form-control"></select>
+                    <span class="text-danger" asp-validation-for="item.CategoryId"></span>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-4">
+                    <label asp-for="item.subCategoryId" class="col-form-label"></label>
+                </div>
+                <div class="col-8">
+                    <select id="SubCatList" asp-for="item.subCategoryId" asp-items="@(new SelectList(Model.subcategory,"id","name"))" class="form-control"></select>
+                    <span class="text-danger" asp-validation-for="item.subCategoryId"></span>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-4">
+                    <label asp-for="item.spicyness" class="col-form-label"></label>
+                </div>
+                <div class="col-8">
+                    <select asp-for="item.spicyness" asp-items="@(Html.GetEnumSelectList<MenuItem.Espicy>())" class="form-control"></select>
+                    <span class="text-danger" asp-validation-for="item.spicyness"></span>
+                </div>
+            </div>
+            <partial name="_UpdateAndBackBtnPartial" />
+        </div>
+        <div class="col-3 offset-1">
+            <img src="@Model.item.image" width="100%" style="border:1px solid #ddd9b9 ; border-radius:5px;" />
+        </div>
+    </div>
+</form>
+
+ @*to validate on page level*@
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+//import { get } from "jquery";
+
+    function displaySubCategory()
+    {
+        var CatID = document.getElementById("dropDownCategry").value;
+        $subCatLocation = $("#SubCatList");
+        $.ajax({
+            url         : '/Admin/subCategories/DisplaySubCategoryOnChange/' + CatID   ,
+            type: 'GET',
+            dataType: 'text',
+            success: function (data) {
+                SubCat = JSON.parse(data);
+                $subCatLocation.html('');
+                var item ='';
+                for (i in SubCat) {
+                    item += '<option value="' + SubCat[i].value + '">' + SubCat[i].text + '</option>';
+                }
+                $subCatLocation.html(item);
+            },
+        });
+    }
+    //$(document).ready(function () {
+    //    displaySubCategory();
+    //});
+    $('#dropDownCategry').on("change", function () {
+        displaySubCategory();
+    });
+    </script>
+    <script>
+    tinymce.init({
+        selector: '#myDescription',
+        plugin: 'lists',
+        menubar:'file edit format',
+    });
+    </script>
+
+}
+
+

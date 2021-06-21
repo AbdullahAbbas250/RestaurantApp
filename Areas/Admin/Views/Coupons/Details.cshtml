@@ -1,0 +1,58 @@
+﻿@model Coupon
+@{
+    ViewData["Title"] = "Detail";
+}
+<br />
+<h2> Detail Coupon </h2>
+<br />
+    <div class="WhiteBackGround border">
+        <input type="hidden" asp-for="id" />
+        <div class="row form-group">
+            <div class="col-2">
+                <label asp-for="name" class="col-form-label"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="name" class="form-control" readonly />
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-2">
+                <label asp-for="CouponType" class="col-form-label"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="CouponType" class="form-control" readonly/>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-2">
+                <label asp-for="Discount" class="col-form-label"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="Discount" class="form-control" readonly />
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-2">
+                <label asp-for="minAmount" class="col-form-label"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="minAmount" class="form-control" readonly />
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-2">
+                <label asp-for="IsActive" class="col-form-label"></label>
+            </div>
+            <div class="col-5">
+                <input type="checkbox" asp-for="IsActive" class="form-control" disabled />
+            </div>
+        </div>
+        <partial name="_EditeAndBackBtnPartial" model="@Model.id" />
+    </div>
+
+@* to validate on page level *@
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}
+

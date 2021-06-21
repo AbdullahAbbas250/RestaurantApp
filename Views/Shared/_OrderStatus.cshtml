@@ -1,0 +1,19 @@
+﻿@model string
+<div style="width:100%;">
+    @if (Model == StaticDefinition.statusSubmitted)
+    {
+        <img src="~/images/placed.PNG" width="100%" />
+    }
+    @if (Model == StaticDefinition.StatusInProccess)
+    {
+        <img src="~/images/Kitchen.PNG" width="100%" />
+    }
+    @if (Model == StaticDefinition.statusReady)
+    {
+        <img src="~/images/pickup.PNG" width="100%" />
+    }
+    @if (Model == StaticDefinition.statusCompleted)
+    {
+        <img src="~/images/Completed.PNG" width="100%" />
+    }
+</div>

@@ -1,0 +1,77 @@
+﻿@model CategrySubCategoryItem
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+<h2> Details item </h2>
+<br />
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="item.id" />
+    <input type="hidden" asp-for="item.image" />
+    <div class="WhiteBackGround border row">
+        <div class="col-8">
+            <div class="row form-group">
+                <div class="col-4">
+                    <label asp-for="item.name" class="col-form-label"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="item.name" class="form-control" readonly />
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-4">
+                    <label asp-for="item.description" class="col-form-label"></label>
+                </div>
+                <div class="col-8">
+                    <textarea id="myDescription" asp-for="item.description" class="form-control" readonly></textarea>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-4">
+                    <label asp-for="item.price" class="col-form-label"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="item.price" class="form-control" readonly />
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-4">
+                    <label asp-for="item.CategoryId" class="col-form-label"></label>
+                </div>
+                <div class="col-8">
+                    <select id="dropDownCategry" disabled asp-for="item.CategoryId" asp-items="@(new SelectList(Model.Category,"id","name"))" class="form-control"></select>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-4">
+                    <label asp-for="item.subCategoryId" class="col-form-label"></label>
+                </div>
+                <div class="col-8">
+                    <select id="SubCatList" disabled asp-for="item.subCategoryId" asp-items="@(new SelectList(Model.subcategory,"id","name"))" class="form-control"></select>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-4">
+                    <label asp-for="item.spicyness" class="col-form-label"></label>
+                </div>
+                <div class="col-8">
+                    <select asp-for="item.spicyness" disabled asp-items="@(Html.GetEnumSelectList<MenuItem.Espicy>())" class="form-control"></select>
+                </div>
+            </div>
+            <partial name="_DeleteAndBackBtnPartial" model="@Model.item.id" />
+        </div>
+        <div class="col-3 offset-1">
+            <img src="@Model.item.image" width="100%" style="border:1px solid #ddd9b9 ; border-radius:5px;" />
+        </div>
+    </div>
+</form>
+
+@*to validate on page level*@
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+
+}
+
+

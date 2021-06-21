@@ -1,0 +1,67 @@
+﻿@model Coupon
+@{
+    ViewData["Title"] = "Edit";
+}
+<br />
+<h2> Edit Coupon </h2>
+<br />
+<form asp-action="Edit" method="post">
+    <div class="WhiteBackGround border">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @*@Html.HiddenFor(a=>a.id)*@
+        <input type="hidden" asp-for="id" />
+        <div class="row form-group">
+            <div class="col-2">
+                <label asp-for="name" class="col-form-label"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="name" class="form-control" />
+                <span class="text-danger" asp-validation-for="name"></span>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-2">
+                <label asp-for="CouponType" class="col-form-label"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="CouponType" class="form-control" />
+                <span class="text-danger" asp-validation-for="CouponType"></span>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-2">
+                <label asp-for="Discount" class="col-form-label"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="Discount" class="form-control" />
+                <span class="text-danger" asp-validation-for="Discount"></span>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-2">
+                <label asp-for="minAmount" class="col-form-label"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="minAmount" class="form-control" />
+                <span class="text-danger" asp-validation-for="minAmount"></span>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-2">
+                <label asp-for="IsActive" class="col-form-label"></label>
+            </div>
+            <div class="col-5">
+                <input type="checkbox" asp-for="IsActive" class="form-control" />
+                <span class="text-danger" asp-validation-for="IsActive"></span>
+            </div>
+        </div>
+        <partial name="_UpdateAndBackBtnPartial" model="@Model.id" />
+    </div>
+</form>
+
+@* to validate on page level *@
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}
+

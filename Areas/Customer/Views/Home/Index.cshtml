@@ -1,0 +1,91 @@
+﻿@model IndexViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+<br />
+<br />
+<div class="WhiteBackGround container">
+    <ul id="Menu-Filter" class="menu-filter-list list-inline text-center justify-content-center">
+        <li class="active btn btn-secondary ml-1 mr-1"  data-filter=".Allcategories" >Show All</li>
+        @foreach (var category in Model.Category)
+        {
+            <li class="btn btn-secondary ml-1 mr-1"  data-filter=".@category.name.Replace(" ",string.Empty)" >@category.name</li>
+        }
+    </ul>
+    @foreach (var item  in Model.Category)
+    {
+        var menuItem = Model.MenuItem.Where(m => m.Category.name.Equals(item.name));
+        <div class="row">
+            @if (menuItem.Count() > 0)
+            {
+                <div class="col-12 @item.name.Replace(" ",string.Empty) Allcategories ">
+                    <div class="row">
+                        <h3 class="text-success">
+                            @item.name
+                        </h3>
+                    </div>
+                    @foreach (var itemCollection in menuItem)
+                    {
+                        <div class="border border-info rounded col-12" style="margin-top:10px;margin-bottom:10px;padding:10px;">
+                            <div class="row">
+                                <div class="col-md-3 col-sm-12 ">
+                                    <img src="@itemCollection.image" width="99%" style="border-radius:5px;border:1px solid #bbb9b9" />
+                                </div>
+                                <div class="col-md-9 col-sm-12">
+                                    <div class="row pr-3">
+                                        <div class="col-8">
+                                            <label class="text-primary" style="font-size:21px;">
+                                                @itemCollection.name
+                                            </label>
+                                        </div>
+                                        <div class="col-4 text-right" style="color:maroon;">
+                                            <h4>
+                                                $ @itemCollection.price
+                                            </h4>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="row col-12 text-justify d-none d-md-block">
+                                        <p>
+                                            @Html.Raw(@itemCollection.description)
+                                        </p>
+                                    </div>
+                                    <div class="col-md-3 col-sm-12 offset-md-9 text-right">
+                                        <a asp-action="Details" asp-route-itemid="@itemCollection.id" class="btn btn-success form-control">Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+        @*<div class="p-4"></div>*@
+     }
+</div>
+
+@section scripts
+{
+<script>
+    $(document).ready(
+        function ($) {
+            $("#Menu-Filter li").click(
+                function () {
+                    $("#Menu-Filter li").removeClass("active");
+                    $(this).addClass("active");
+                    var selectedFiter = $(this).data("filter");
+                    $(".Allcategories").fadeOut();
+                    setTimeout(function() {
+                        $(selectedFiter).slideDown();
+                    }, 100);
+
+                }
+            )
+        }
+    );
+
+</script>
+}

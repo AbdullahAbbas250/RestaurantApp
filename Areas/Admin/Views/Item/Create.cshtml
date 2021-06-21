@@ -1,0 +1,120 @@
+﻿@model CategrySubCategoryItem
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+<h2> Create item </h2>
+<br />
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div class="WhiteBackGround border">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row form-group">
+            <div class="col-2">
+                <label asp-for="item.name" class="col-form-label"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="item.name" class="form-control" />
+                <span class="text-danger" asp-validation-for="item.name"></span>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-2">
+                <label asp-for="item.description" class="col-form-label"></label>
+            </div>
+            <div class="col-5">
+                <textarea id="myDescription" asp-for="item.description" class="form-control"></textarea>
+                <span class="text-danger" asp-validation-for="item.description"></span>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-2">
+                <label asp-for="item.price" class="col-form-label"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="item.price" class="form-control" />
+                <span class="text-danger" asp-validation-for="item.price"></span>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-2">
+                <label asp-for="item.image" class="col-form-label"></label>
+            </div>
+            <div class="col-5">
+                <input type="file" multiple asp-for="item.image" class="form-control" />
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-2">
+                <label asp-for="item.CategoryId" class="col-form-label"></label>
+            </div>
+            <div class="col-5">
+                <select id="dropDownCategry" asp-for="item.CategoryId" asp-items="@(new SelectList(Model.Category,"id","name"))" class="form-control"></select>
+                <span class="text-danger" asp-validation-for="item.CategoryId"></span>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-2">
+                <label asp-for="item.subCategoryId" class="col-form-label"></label>
+            </div>
+            <div class="col-5">
+                <select id="SubCatList" asp-for="item.subCategoryId" asp-items="@(new SelectList(string.Empty,"id","name"))" class="form-control"></select>
+                <span class="text-danger" asp-validation-for="item.subCategory.id"></span>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-2">
+                <label asp-for="item.spicyness" class="col-form-label"></label>
+            </div>
+            <div class="col-5">
+                <select asp-for="item.spicyness" asp-items="@(Html.GetEnumSelectList<MenuItem.Espicy>())" class="form-control"></select>
+                <span class="text-danger" asp-validation-for="item.spicyness"></span>
+            </div>
+        </div>
+        <partial name="_CreateAndBackBtnPartial" />
+    </div>
+</form>-->
+
+ to validate on page level 
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+//import { get } from "jquery";
+
+    function displaySubCategory()
+    {
+        var CatID = document.getElementById("dropDownCategry").value;
+        $subCatLocation = $("#SubCatList");
+        $.ajax({
+            url         : '/Admin/subCategories/DisplaySubCategoryOnChange/' + CatID   ,
+            type: 'GET',
+            dataType: 'text',
+            success: function (data) {
+                SubCat = JSON.parse(data);
+                $subCatLocation.html('');
+                var item ='';
+                for (i in SubCat) {
+                    item += '<option value="' + SubCat[i].value + '">' + SubCat[i].text + '</option>';
+                }
+                $subCatLocation.html(item);
+            },
+        });
+    }
+    $(document).ready(function () {
+        displaySubCategory();
+    });
+    $('#dropDownCategry').on("change", function () {
+        displaySubCategory();
+    });
+    </script>
+<script>
+    tinymce.init({
+        selector: '#myDescription',
+        plugin: 'lists',
+        menubar:'file edit format',
+    });
+</script>
+
+}
+

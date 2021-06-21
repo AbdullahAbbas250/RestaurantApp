@@ -1,0 +1,81 @@
+﻿@model SubCategAndCategModel
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+<h1>Edit Sub Category </h1>
+<br />
+<partial name="_StatusMessage" model="Model.MessgStatus" />
+<div class="WhiteBackGround border">
+    <div class="row">
+        <div class="col-8 border-right">
+            <form asp-action="Edit" method="post">
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="subCategory.id" />
+                <input type="hidden" asp-for="subCategory.CategoryId" />
+                <div class="row form-group">
+                    <div class="col-3">
+                        <label asp-for="subCategory.category.name" class="col-form-label"></label>
+                    </div>
+                    <div class="col-5">
+                        <select disabled asp-for="subCategory.CategoryId"
+                                id="dropDownCategry"
+                                class="form-control"
+                                asp-items="@(new SelectList(Model.categoryList,"id","name"))"></select>
+                        <span class="text-danger" asp-validation-for="subCategory.name"></span>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-3">
+                        <label asp-for="subCategory.name" class="col-form-label"></label>
+                    </div>
+                    <div class="col-5">
+                        <input asp-for="subCategory.name" class="form-control" />
+                        <span class="text-danger" asp-validation-for="subCategory.name"></span>
+                    </div>
+                </div>
+                <partial name="_UpdateAndBackBtnPartial" />
+            </form>
+        </div>
+        <div class="col-3">
+            <p>Exist SubCategories</p>
+            <div id="SubCatList" class="#">
+
+            </div>
+        </div>
+    </div>
+</div>
+@* to validate on page level *@
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+//import { get } from "jquery";
+
+    function displaySubCategory()
+    {
+        var CatID = document.getElementById("dropDownCategry").value;
+        $subCatLocation = $("#SubCatList");
+        $.ajax({
+            url         : '/Admin/subCategories/DisplaySubCategoryOnChange/' + CatID   ,
+            type: 'GET',
+            dataType: 'text',
+            success: function (data) {
+                SubCat = JSON.parse(data);
+                $subCatLocation.html('');
+                $subCatLocation.append('<ul class="list-group">');
+                for (i in SubCat) {
+                    $subCatLocation.append('<li class="list-group-item">' + SubCat[i].value + '</li>');
+                }
+                $subCatLocation.append('</ul>');
+                console.log(data);
+            },
+        });
+    }
+    $(document).ready(function () {
+        displaySubCategory();
+    });
+    </script>
+}

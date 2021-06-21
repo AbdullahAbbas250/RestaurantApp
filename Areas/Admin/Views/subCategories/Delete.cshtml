@@ -1,0 +1,31 @@
+﻿@model subCategory
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+<h1>Delete Sub Category </h1>
+<br />
+<form asp-action="Delete" method="post">
+    <div class="WhiteBackGround border">
+        @Html.HiddenFor(a => a.id)
+        <div class="row form-group">
+            <div class="col-2">
+                <label asp-for="category.name" class="col-form-label"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="category.name" readonly class="form-control" />
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-2">
+                <label asp-for="name" class="col-form-label"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="name" readonly class="form-control" />
+            </div>
+        </div>
+        <partial name="_DeleteAndBackBtnPartial" />
+    </div>
+</form>
+
